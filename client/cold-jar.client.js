@@ -1,5 +1,5 @@
 //import * as html2canvas from 'html2canvas';
-var socket = io('http://localhost:3000');
+var socket = io('http://localhost:3000/');
 
 const id = setInterval(() => {
 	html2canvas(document.body)
