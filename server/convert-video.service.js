@@ -34,12 +34,11 @@ class VideoConverter {
     makeVideoFromFramesInPath(framesPath) {
         return new Promise((resolve, reject) => {
         	let frames;
-	    	try{
+	    	try {
 	            frames = VideoConverter.getFramesInPath(framesPath);
-	    	}
-	    	catch(e){
-	    		Logger.error("Unable to get frames in path", framesPath);
-	    		reject(e);	
+	    	} catch (e) {
+	    		Logger.error('Unable to get frames in path', framesPath);
+	    		reject(e);
 	    	}
 
             if (frames && frames.length > 0) {
