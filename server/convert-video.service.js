@@ -12,7 +12,7 @@ const CONFIGURATION = {
     outputOptions: ['-pix_fmt yuv420p'],
     format: 'mp4',
 };
-const VIDEO_PATH = path.join(__dirname, '../temp/video');
+const VIDEO_PATH = path.join(__dirname, '../video');
 
 class VideoConverter {
     constructor() {

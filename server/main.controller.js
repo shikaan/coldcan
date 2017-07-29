@@ -1,5 +1,6 @@
 const FrameStorageService = require('./frame-storage.service');
 const VideoConverter = require('./convert-video.service');
+const FileSystemSetupService = require('./file-system-setup.service');
 const Logger = require('./log.service');
 
 class MainController {
@@ -9,6 +10,7 @@ class MainController {
 
     init(socket) {
         Logger.info('Incoming socket connection');
+        FileSystemSetupService.setup();
 
         socket.on('video-chunk', MainController.saveFrame);
 
@@ -33,6 +35,7 @@ class MainController {
         VideoConverter.makeVideoFromFramesInPath(FrameStorageService.FRAMES_PATH)
             .then(() => {
                 Logger.info('Video successfully saved');
+                FileSystemSetupService.teardown();
             })
             .catch((e) => {
                 Logger.error(e);

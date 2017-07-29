@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const Logger = require('./log.service');
 
-const FRAMES_PATH = path.join(__dirname, '../temp');
+const FRAMES_PATH = path.join(__dirname, '../frames');
 
 class FrameStorageService {
     constructor() {
