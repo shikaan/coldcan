@@ -15,7 +15,7 @@ class MainController {
         socket.on('disconnect', MainController.saveVideo);
     }
 
-    static saveFrame() {
+    static saveFrame(chunk) {
         Logger.info('Started frame saving');
         FrameStorageService.storeBase64Image(chunk)
             .then(() => {
