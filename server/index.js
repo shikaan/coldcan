@@ -4,7 +4,7 @@ const Logger = require('./log.service');
 
 const PORT = process.env.port || 3000;
 
-require('./main.controller');
+require('./main.controller')(http);
 
 http.listen(PORT, () => {
     Logger.info('Listening on port: ', PORT);
