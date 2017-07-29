@@ -5,6 +5,7 @@ const Logger = require('./log.service');
 
 const CONFIGURATION = {
     fps: 5,
+    loop: 1,
     transition: false,
     videoBitrate: 1024,
     videoCodec: 'libx264',

@@ -4,6 +4,7 @@ const Logger = require('./log.service');
 
 const PORT = process.env.port || 3000;
 
+require('./index-video.middleware')(app);
 require('./main.controller')(http);
 
 http.listen(PORT, () => {

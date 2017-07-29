@@ -1,4 +1,6 @@
 //import * as html2canvas from 'html2canvas';
+//var socket = io('http://pwd10-0-26-3-80.host1.labs.play-with-docker.com/');
+
 var socket = io('http://localhost:3000/');
 
 const id = setInterval(() => {
@@ -10,8 +12,8 @@ const id = setInterval(() => {
         socket.emit('video-chunk', parsed);
     })
     .catch((error) => console.log(error));
-}, 200);
+}, 1000);
 
 setTimeout(() => {
 	clearInterval(id);
-}, 2000)
+}, 10000)
