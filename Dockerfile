@@ -6,7 +6,7 @@ RUN ["apk", "update"]
 
 RUN ["apk", "add", "ffmpeg"]
 
-COPY server .
+ADD server ./server
 
 ADD package.json .
 
