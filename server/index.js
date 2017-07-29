@@ -1,29 +1,48 @@
-//gifshot
-//http://cliffordhall.com/2016/10/creating-video-server-node-js/
-//https://github.com/h2non/videoshow
+// gifshot
+// http://cliffordhall.com/2016/10/creating-video-server-node-js/
+// https://github.com/h2non/videoshow
 
 
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var path = require('path');
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const FrameStorageService = require('./frame-storage.service');
+const VideoConverter = require('./convert-video.service');
+const Logger = require('./log.service');
 
-app.get('/', function(req, res){
-  res.sendStatus(200);
+app.get('/', (req, res) => {
+    res.sendStatus(200);
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+io.on('connection', (socket) => {
+    Logger.info('Incoming socket connection');
+    
+    socket.on('video-chunk', (chunk) => {
+    	Logger.info("Chunk received");
+        FrameStorageService.storeBase64Image(chunk)
+        	.then(() => {
+        		Logger.info("Chunk successfully saved");
+        	})
+        	.catch((e) => {
+        		Logger.error(e);
+        	})
+    });
 
-	socket.on('video-chunk', function(chunk) {
-		console.log(chunk);
-	})
+    socket.on('disconnect', () => {
+    	Logger.info("Started video saving");
+    	Logger.debug(FrameStorageService.FRAMES_PATH);
+    	
+        VideoConverter.makeVideoFromFramesInPath(FrameStorageService.FRAMES_PATH)
+        	.then(() => {
+        		Logger.info("Video successfully saved");
+        	})
+        	.catch((e) => {
+        		Logger.error(e);
+        	})
+    });
 });
 
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(3000, () => {
+    console.log('listening on *:3000');
 });
