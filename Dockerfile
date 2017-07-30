@@ -10,8 +10,10 @@ ADD server ./server
 
 ADD package.json .
 
-RUN ["npm", "install"]
+ADD configuration.json .
+
+RUN ["yarn", "install"]
 
 EXPOSE 80:3000
 
-RUN ["npm", "start"]
+CMD ["npm", "start"]

@@ -21,6 +21,8 @@ This is not meant to be used in production for:
 
  - order of frames is not 100% guaranteed;
 
+ - depending on the client resources, less frames than expected could be created;
+
 Again, please don't take this too seriously.
 
 ## What it's supposed to do ##
@@ -29,9 +31,23 @@ This should record a configurable-amount-of-time long video of the page.
 
 ## Building ##
 
-Set configuration options in `configuration.json` file and run `npm build`.
+Set configuration options in `configuration.json` file and run `npm run build-client`. 
+This will create a `client/coldcan-client.js` to be included in the page to be recorded. 
+
+At bootstrap the client app will try to fetch a configuration JSON file. 
+By default the configuration endpoint will be `${configuration.server}/configuration` 
+(see Configuring section for further details).
+If you want to change this URL you can provide a CONFIG_URL env variable on the build
+machine just before you run `npm run build`. The client app will try to fetch 
+the configuration from `${CONFIG_URL}/configuration`. 
+
+Please note: you are strongly recommended to use the default endpoint to serve the configuration 
+for the client side application so you won't have any kind inconsistency between the client and server. 
 
 ## Configuring ##
+
+In the root of this repo you can find a `configuration.json` file. Settings in that file will act on
+both the front-end and the back-end applications.
 
 | Entry           | Description                                                                                                                 | Example                  |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------|--------------------------|
@@ -75,7 +91,5 @@ I included an `npm run lint` script, so I'd like to receive linted pull requests
 ## Improvement Ideas ##
 
 There's a list of feature I will add one day or another.
-
-- Make the client download the configuration from the server, so you don't have to rebuild it on every change;
 
 - Base rendered video lengths on the configuration video length instead of the number of frames received, in order to have consistent video lengths in case of frames not received;

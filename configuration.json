@@ -1,7 +1,7 @@
 {
-	"server": "http://localhost:3000",
+	"server": "http://192.168.1.6:3000",
 	"length": 10,
-	"fps": 5,
+	"fps": 2,
 	"elementToRecord": "body",
 	"frameExtension": "png"
 }

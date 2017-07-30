@@ -1,6 +1,6 @@
 const html2canvas = require('html2canvas');
 const io = require('socket.io-client');
-const configuration = require('../configuration.json');
+const configURL = process.env.CONFIG_URL || require('../configuration.json').server;
 
 class Main {
 	constructor() {
@@ -9,19 +9,27 @@ class Main {
 		this.length = 10000;
 		this.fps = 1;
 
-		this._fetchElementToRecord();
-		this._fetchServerUrl();
-		this._fetchLength();
-		this._fetchFrameRate();
+		fetch(`${configURL}/configuration`)
+			.then((response) => {
+				response.json()
+					.then((configuration) => {
+						this.configuration = configuration;
 
-		this.init();
+						this._fetchElementToRecord();
+						this._fetchServerUrl();
+						this._fetchLength();
+						this._fetchFrameRate();
+
+						this.init();
+					})
+			})
 	}
 
 	_fetchElementToRecord() {
 		try {
-			this.elementToRecord = document.querySelector(configuration.elementToRecord);
+			this.elementToRecord = document.querySelector(this.configuration.elementToRecord);
 		} catch (e) {
-			console.error(`Unable to find ${configuration.elementToRecord} in DOM.`,
+			console.error(`Unable to find ${this.configuration.elementToRecord} in DOM.`,
 				"Please be sure you spelled it correctly and it's a valid query.",
 				"Using document.body.");
 		}
@@ -32,10 +40,10 @@ class Main {
 	}
 
 	_fetchServerUrl() {
-		if (configuration.server && configuration.server !== "") {
-			if(/^(http)/.test(configuration.server))
-				this.server = configuration.server;
-			else{
+		if (this.configuration.server && this.configuration.server !== "") {
+			if (/^(http)/.test(this.configuration.server))
+				this.server = this.configuration.server;
+			else {
 				console.error("Wrong server provided: did you forget to add the http?",
 					"Using: http://localhost:3000");
 			}
@@ -45,23 +53,21 @@ class Main {
 	}
 
 	_fetchLength() {
-		const length = Number.parseFloat(configuration.length);
+		const length = Number.parseFloat(this.configuration.length);
 
-		if(length === length){
+		if (length === length) {
 			this.length = length * 1000;
-		}
-		else{
+		} else {
 			console.error("Wrong length provided. Using 10s.")
 		}
 	}
 
 	_fetchFrameRate() {
-		const fps = Number.parseInt(configuration.fps);
+		const fps = Number.parseInt(this.configuration.fps);
 
-		if(fps === fps){
-			this.fps = 1000/fps;
-		}
-		else{
+		if (fps === fps) {
+			this.fps = 1000 / fps;
+		} else {
 			console.error("Wrong fps provided. Using 1fps.")
 		}
 	}
@@ -72,7 +78,7 @@ class Main {
 		const id = setInterval(() => {
 			html2canvas(this.elementToRecord)
 				.then((data) => {
-					let parsed = data.toDataURL(`image/${configuration.frameExtension}`, 0.5);
+					let parsed = data.toDataURL(`image/${this.configuration.frameExtension}`, 0.5);
 
 					//Data to be sent to the backend
 					socket.emit('video-chunk', parsed);

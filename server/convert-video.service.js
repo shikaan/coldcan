@@ -58,7 +58,6 @@ class VideoConverter {
                 })
                 .on('end', (outputPath) => {
                     Logger.info('Conversion complete!');
-                    Logger.debug(outputPath);
                     resolve();
                 })
                 .save(this.getVideoPath(Date.now()));
