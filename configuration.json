@@ -1,0 +1,6 @@
+{
+	"server": "http://localhost:3000",
+	"length": 10,
+	"fps": 1,
+	"elementToRecord": "body" 
+}

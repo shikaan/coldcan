@@ -17,6 +17,8 @@ This is not meant to be used in production for:
 
  - it may not work on complicated sites;
 
+ - on every configuration change you have to rebuild and clients won't be aware of changes;
+
 Again, please don't take this too seriously.
 
 ## What it's supposed to do ##
@@ -30,11 +32,22 @@ better results.
 
 Set configuration options in `configuration.json` file and run `npm build`.
 
+## Configuring ##
+
+### server ###
+URL of the recording server
+
+### length ###
+Video length in seconds
+
 ## Usage ## 
 
 ### Client Side ###
 
 Include the `client/coldcan-client.js` script in the page you want to record.
+This will start recording as soon as the socket.io connection is established.
+The video processing will start when the socket.io connection is interrupted 
+(you close the browser, refresh the page and so on).
 
 ### Server Side ###
 
@@ -57,3 +70,9 @@ Fork this repo, edit code and make pull requests.
 
 I included an `npm run lint` script, so I'd like to receive pull requests already
 linted. 
+
+
+
+### IDEAS ###
+- Use fluent ffmpeg
+- Make the client download the configuration from the server
