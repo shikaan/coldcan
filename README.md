@@ -17,11 +17,9 @@ This is not meant to be used in production for:
 
  - it may not work on complicated sites;
 
- - on every configuration change you have to rebuild and clients won't be aware of changes;
-
- - order of frames is not 100% guaranteed;
-
- - depending on the client resources, less frames than expected could be created;
+ - depending on the client resources, less frames than expected could be created; 
+ 
+ - it lacks a senseful test suite;
 
 Again, please don't take this too seriously.
 

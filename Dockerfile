@@ -10,6 +10,8 @@ ADD server ./server
 
 ADD package.json .
 
+ADD yarn.lock .
+
 ADD configuration.json .
 
 RUN ["yarn", "install"]
