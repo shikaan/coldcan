@@ -56,7 +56,7 @@ class VideoConverter {
                     Logger.debug('Stdout: ', stdout);
                     reject(err);
                 })
-                .on('end', (outputPath) => {
+                .on('end', () => {
                     Logger.info('Conversion complete!');
                     resolve();
                 })

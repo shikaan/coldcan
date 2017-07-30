@@ -36,7 +36,7 @@ This will create a `client/coldcan-client.js` to be included in the page to be r
 
 At bootstrap the client app will try to fetch a configuration JSON file. 
 By default the configuration endpoint will be `${configuration.server}/configuration` 
-(see Configuring section for further details).
+(see _Configuring_ section for further details).
 If you want to change this URL you can provide a CONFIG_URL env variable on the build
 machine just before you run `npm run build`. The client app will try to fetch 
 the configuration from `${CONFIG_URL}/configuration`. 
