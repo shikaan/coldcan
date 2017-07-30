@@ -2,13 +2,14 @@ const FrameStorageService = require('./frame-storage.service');
 const VideoConverter = require('./convert-video.service');
 const FileSystemSetupService = require('./file-system-setup.service');
 const Logger = require('./log.service');
+const socketIO = require('socket.io');
 
 class MainController {
     constructor(http) {
-        require('socket.io')(http).on('connection', this.init);
+        socketIO(http).on('connection', MainController.init);
     }
 
-    init(socket) {
+    static init(socket) {
         Logger.info('Incoming socket connection');
         FileSystemSetupService.setup();
 
@@ -43,6 +44,6 @@ class MainController {
     }
 }
 
-module.exports = function(http) {
+module.exports = function controller(http) {
     return new MainController(http);
-}
+};

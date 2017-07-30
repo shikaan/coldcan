@@ -3,7 +3,7 @@ const io = require('socket.io-client');
 const configuration = require('../configuration.json');
 
 class Main {
-	contructor() {
+	constructor() {
 		this.elementToRecord = document.body;
 		this.server = "http://localhost:3000";
 		this.length = 10000;
@@ -56,13 +56,13 @@ class Main {
 	}
 
 	_fetchFrameRate() {
-		const fps = Number.parseInt(configuration.length);
+		const fps = Number.parseInt(configuration.fps);
 
-		if(fps === 1){
+		if(fps === fps){
 			this.fps = 1000/fps;
 		}
 		else{
-			console.error("Wrong fps provided. It should be 1. Using 1fps.")
+			console.error("Wrong fps provided. Using 1fps.")
 		}
 	}
 
@@ -72,7 +72,7 @@ class Main {
 		const id = setInterval(() => {
 			html2canvas(this.elementToRecord)
 				.then((data) => {
-					let parsed = data.toDataURL("image/png", 0.5);
+					let parsed = data.toDataURL(`image/${configuration.frameExtension}`, 0.5);
 
 					//Data to be sent to the backend
 					socket.emit('video-chunk', parsed);

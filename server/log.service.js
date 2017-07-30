@@ -3,25 +3,27 @@ const winston = require('winston');
 const LEVELS = ['debug', 'info', 'warn', 'error'];
 
 class Logger {
-    constructor(level) {
+    static setLevel(level) {
         winston.level = LEVELS.indexOf(level) > -1 ? level : 'debug';
     }
 
-    debug() {
-        winston.debug(`[%s]: ${[...arguments].join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
+    static debug(...args) {
+        winston.debug(`[%s]: ${args.join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
     }
 
-    info() {
-        winston.info(`[%s]: ${[...arguments].join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
+    static info(...args) {
+        winston.info(`[%s]: ${args.join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
     }
 
-    error() {
-        winston.error(`[%s]: ${[...arguments].join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
+    static error(...args) {
+        winston.error(`[%s]: ${args.join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
     }
 
-    warn() {
-        winston.warn(`[%s]: ${[...arguments].join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
+    static warn(...args) {
+        winston.warn(`[%s]: ${args.join(' ')}`, (new Date()).toLocaleString(), { timestamp: Date.now() });
     }
 }
 
-module.exports = new Logger('debug');
+Logger.setLevel('debug');
+
+module.exports = Logger;
