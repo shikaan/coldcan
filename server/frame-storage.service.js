@@ -27,10 +27,17 @@ class FrameStorageService {
     }
 
     storeBase64Image(rawBase64String) {
-        const imageData = FrameStorageService.parseRawBase64String(rawBase64String);
-        const fileName = this.getFileName(imageData.extension);
-
         return new Promise((resolve, reject) => {
+            let imageData, fileName;
+            
+            try{
+                imageData = FrameStorageService.parseRawBase64String(rawBase64String);
+                fileName = this.getFileName(imageData.extension);
+            }
+            catch(e){
+                reject(e);
+            }
+
             fs.writeFile(fileName, imageData.cleanString, 'base64', (error) => {
                 if (error) {
                     Logger.error('An error occured while converting to image');

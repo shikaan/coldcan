@@ -29,38 +29,43 @@ class VideoConverter {
 
     makeVideoFromFramesInPath(framesPath) {
         return new Promise((resolve, reject) => {
-            ffmpeg({
-                source: VideoConverter.getFramesPattern(framesPath),
-                logger: console,
-            })
-                .inputFps(this.FFMPEG_CONFIGURATION.fps)
-                .inputOptions(this.FFMPEG_CONFIGURATION.inputOptions)
-                .noAudio()
-                .videoCodec(this.FFMPEG_CONFIGURATION.codec)
-                .videoBitrate(this.FFMPEG_CONFIGURATION.bitrate)
-                .outputOptions(this.FFMPEG_CONFIGURATION.outputOptions)
-                .fps(this.FFMPEG_CONFIGURATION.fps)
-                .size('640x?')
-                .on('start', () => {
-                    Logger.info('Started conversion');
-                })
-                .on('progress', (progress) => {
-                    Logger.info(`Frames: ${progress.frames}`);
-                })
-                .on('error', (err, stdout, stderr) => {
-                    // Please note: this error is thrown if frames don't have
-                    // the same height and width. 
-                    // TODO: add image size check somewhere 
-                    Logger.error(err);
-                    Logger.debug('Stderr: ', stderr);
-                    Logger.debug('Stdout: ', stdout);
-                    reject(err);
-                })
-                .on('end', () => {
-                    Logger.info('Conversion complete!');
-                    resolve();
-                })
-                .save(this.getVideoPath(Date.now()));
+            try {
+                ffmpeg({
+                        source: VideoConverter.getFramesPattern(framesPath),
+                        logger: Logger
+                    })
+                    .inputFps(this.FFMPEG_CONFIGURATION.fps)
+                    .inputOptions(this.FFMPEG_CONFIGURATION.inputOptions)
+                    .noAudio()
+                    .videoCodec(this.FFMPEG_CONFIGURATION.codec)
+                    .videoBitrate(this.FFMPEG_CONFIGURATION.bitrate)
+                    .outputOptions(this.FFMPEG_CONFIGURATION.outputOptions)
+                    .fps(this.FFMPEG_CONFIGURATION.fps)
+                    .size('640x?')
+                    .on('start', () => {
+                        Logger.info('Started conversion');
+                    })
+                    .on('progress', (progress) => {
+                        Logger.info(`Frames: ${progress.frames}`);
+                    })
+                    .on('error', (err, stdout, stderr) => {
+                        // Please note: this error is thrown if frames don't have
+                        // the same height and width. 
+                        // TODO: add image size check somewhere 
+                        Logger.error(err);
+                        Logger.debug('Stderr: ', stderr);
+                        Logger.debug('Stdout: ', stdout);
+                        reject(err);
+                    })
+                    .on('end', () => {
+                        Logger.info('Conversion complete!');
+                        resolve();
+                    })
+                    .save(this.getVideoPath(Date.now()));
+            }
+            catch(e){
+                reject(e);
+            }
         });
     }
 }
